@@ -36,18 +36,25 @@ if uploaded_file is not None:
     if not data.empty:
         # Exclude non-numeric columns from VIF calculation
         numerical_cols = data.select_dtypes(include=['number']).columns
-        X = data[numerical_cols]
 
-        # Calculate VIF
-        st.write("### Variance Inflation Factor (VIF)")
-        vif_result = calculate_vif(X)
-        st.write(vif_result)
+        # Multiselect for choosing features
+        selected_features = st.multiselect("Select features for VIF calculation", options=numerical_cols, default=list(numerical_cols))
 
-        # Interpret VIF results
-        st.write("### VIF Interpretation")
-        vif_interpretation = interpret_vif(vif_result)
-        for interpretation in vif_interpretation:
-            st.write(interpretation)
+        if len(selected_features) > 0:
+            X = data[selected_features]
+
+            # Calculate VIF
+            st.write("### Variance Inflation Factor (VIF)")
+            vif_result = calculate_vif(X)
+            st.write(vif_result)
+
+            # Interpret VIF results
+            st.write("### VIF Interpretation")
+            vif_interpretation = interpret_vif(vif_result)
+            for interpretation in vif_interpretation:
+                st.write(interpretation)
+        else:
+            st.write("Please select at least one feature.")
 
     else:
         st.write("Please upload a valid CSV file.")
