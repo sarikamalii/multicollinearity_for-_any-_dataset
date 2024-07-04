@@ -1,1 +1,1 @@
-multicollinearity for any numeric dataset
+multicollinearity for any numeric feature dataset
